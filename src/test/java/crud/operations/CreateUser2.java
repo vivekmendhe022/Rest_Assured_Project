@@ -12,9 +12,9 @@ public class CreateUser2 {
 	public static String url = "https://reqres.in/api/users/2";
 
 	public static void main(String[] args) {
-		deleteRequest();
+		updateUser();
 	}
-	
+
 	public static void deleteRequest() {
 		Response response = RestAssured.delete(url);
 		System.out.println(response.statusCode());
@@ -28,8 +28,6 @@ public class CreateUser2 {
 		System.out.println("Status code is 200: " + isStatusCode200);
 		System.out.println("GET Response:\n" + res.getBody().asPrettyString());
 	}
-	
-	
 
 	@SuppressWarnings("unchecked")
 	public static void createUser() {
@@ -51,6 +49,27 @@ public class CreateUser2 {
 		System.out.println(res.getStatusLine());
 		System.out.println(res.getBody().asPrettyString());
 		res.then().assertThat().statusCode(201);
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void updateUser() {
+		// Create the necessary data
+		JSONObject j = new JSONObject();
+		j.put("name", "UpdatedName");
+		j.put("job", "UpdatedJob");
+
+		// Send the Request
+		RequestSpecification req = RestAssured.given();
+		req.body(j);
+		req.contentType(ContentType.JSON);
+		Response res = req.put(url); // Use PUT for updating
+
+		// Validate the response
+		System.out.println(res.getContentType());
+		System.out.println(res.getStatusCode());
+		System.out.println(res.getStatusLine());
+		System.out.println(res.getBody().asPrettyString());
+		res.then().assertThat().statusCode(200);
 	}
 
 }
